@@ -22,15 +22,17 @@ list.addEventListener("click", (e) => {
   turn.innerText = check ? "x" : 0;
   turn.style.color = check ? "blue" : "orange";
 
-  switchWrapper.style.display = "none";
-  check = !check;
-  if (e.target.innerText !== "x" && e.target.innerText !== "0") {
+  if (e.target.innerText !== "x" || e.target.innerText !== "0") {
+    switchWrapper.style.display = "none";
+    check = !check;
     e.target.textContent = check ? "x" : "0";
     if (e.target.innerText === "x") {
       e.target.style.color = "blue";
     } else {
       e.target.style.color = "orange";
     }
+  } else {
+    return;
   }
 
   checkValue(block_1, block_2, block_3, "x");
@@ -50,6 +52,19 @@ list.addEventListener("click", (e) => {
   checkValue(block_3, block_6, block_9, "0");
   checkValue(block_1, block_5, block_9, "0");
   checkValue(block_3, block_5, block_7, "0");
+  let arr = Array.from(list.children);
+  let i = 0;
+  arr.forEach((elem) => (elem.innerText !== "" ? (i += 1) : null));
+  if (i == 9) {
+    setTimeout(() => {
+      let arr = Array.from(list.children);
+      arr.forEach((elem) => (elem.innerText = ""));
+      check = false;
+      turn.innerText = "x";
+      turn.style.color = "blue";
+    }, 1000);
+  }
+  console.log(i);
 });
 
 chooseBtn.addEventListener("click", (e) => {
@@ -68,7 +83,6 @@ restartBtn.addEventListener("click", () => {
   let arr = Array.from(list.children);
   arr.forEach((elem) => (elem.innerText = ""));
   check = false;
-  console.log(true);
 });
 
 const checkValue = (block1, block2, block3, text) => {
@@ -77,6 +91,18 @@ const checkValue = (block1, block2, block3, text) => {
     block2.innerText === text &&
     block3.innerText === text
   ) {
+    block1.style.background = "Aquamarine";
+    block2.style.background = "Aquamarine";
+    block3.style.background = "Aquamarine";
+    setTimeout(() => {
+      block1.style.background = "white";
+      block2.style.background = "white";
+      block3.style.background = "white";
+      let arr = Array.from(list.children);
+      arr.forEach((elem) => (elem.innerText = ""));
+      check = false;
+    }, 1000);
+
     console.log(`winner is ${text}`);
   }
 };
